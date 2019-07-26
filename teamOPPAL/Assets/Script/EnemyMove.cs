@@ -9,20 +9,24 @@ public class EnemyMove : MonoBehaviour
     public Vector3 GoalPos;
     private float changeTargetDistance = 40.0f;
     float seconds;
+    public Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
         GoalPos = GetRandomPositionOnlevel();
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()
+    {
+        rb.AddForce(transform.forward * 20);
     }
 
     // Update is called once per frame
     void Update()
     {
         seconds += Time.deltaTime;
-
-        AIMove();
-        
     }
 
     public void AIMove()
