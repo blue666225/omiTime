@@ -24,22 +24,15 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var y = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
-
-        
-        transform.Rotate(0, y*Rotate_speed, 0);
-        transform.Translate(0, 0, z);
-        
-        direction.Normalize();
         //追加
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) 
-            || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A)
+          || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             if (audioSource.isPlaying) return;
             audioSource.PlayOneShot(moveSE);
         }
-        else if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.LeftArrow)|| 
+        else if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.LeftArrow) ||
                  Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow))
         {
             if (audioSource.isPlaying) return;
@@ -49,17 +42,31 @@ public class PlayerMove : MonoBehaviour
         {
             audioSource.Stop();
         }
-
+    }
+     void FixedUpdate()
+    {
+        var y = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+        var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+        Move(y, z);
         //Houtou.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
 
+        rB.AddForce(transform.forward);
     }
 
-    public void OnCollisionEnter(Collision collision)
+    void Move(float y,float z)
     {
-        if(collision.gameObject.CompareTag("Ground"))
-        {
-            rB.constraints = RigidbodyConstraints.FreezePositionY;
-        }
+        transform.Rotate(0, y * Rotate_speed, 0);
+        transform.Translate(0, 0, z);
 
+        direction.Normalize();
     }
+
+    //public void OnCollisionEnter(Collision collision)
+    //{
+    //    if(collision.gameObject.CompareTag("Ground"))
+    //    {
+    //        rB.constraints = RigidbodyConstraints.FreezePositionY;
+    //    }
+
+    //}
 }
